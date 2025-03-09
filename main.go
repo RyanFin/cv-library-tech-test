@@ -7,12 +7,9 @@ import (
 	"time"
 )
 
-func initBeeHive() (model.QueenBee, map[string][]model.WorkerBee, map[string][]model.DroneBee) {
+func initBeeHive() (model.QueenBee, []model.WorkerBee, []model.DroneBee) {
 	const numOfWorkerBees = 5
 	const numOfDroneBees = 25
-
-	workerBeeMap := make(map[string][]model.WorkerBee)
-	droneBeeMap := make(map[string][]model.DroneBee)
 
 	workerBees := []model.WorkerBee{}
 	droneBees := []model.DroneBee{}
@@ -20,25 +17,31 @@ func initBeeHive() (model.QueenBee, map[string][]model.WorkerBee, map[string][]m
 	// generate worker bees
 	for i := 0; i < numOfWorkerBees; i++ {
 		wb := model.NewWorkerBee()
-		beeName := fmt.Sprintf("wb%v", i)
+		// beeName := fmt.Sprintf("wb%v", i)
 		workerBees = append(workerBees, wb)
-		workerBeeMap[beeName] = workerBees
+		// workerBeeMap[beeName] = workerBees
 	}
 
 	// generate drone bees
 	for i := 0; i < numOfDroneBees; i++ {
 		db := model.NewDroneBee()
-		beeName := fmt.Sprintf("db%v", i)
+		// beeName := fmt.Sprintf("db%v", i)
 		droneBees = append(droneBees, db)
-		droneBeeMap[beeName] = droneBees
+		// droneBeeMap[beeName] = droneBees
 
 	}
 
-	return model.NewQueenBee(), workerBeeMap, droneBeeMap
+	return model.NewQueenBee(), workerBees, droneBees
 }
 
-func beehiveStatus() {
+func beehiveStatus(queenBee model.QueenBee, workerBees []model.WorkerBee, droneBees []model.DroneBee) {
+	fmt.Println("Viewing the beehive...")
+	fmt.Printf("Queen Bee: %v\n", queenBee)
+	fmt.Printf("Worker Bees: %v\n", len(workerBees))
+	fmt.Printf("Drone Bees: %v\n", len(droneBees))
 
+	fmt.Println("Worker Bees: ", workerBees)
+	fmt.Println("Drone Bees: ", droneBees)
 }
 
 func main() {
@@ -62,7 +65,7 @@ func main() {
 
 }
 
-func start(player model.Player, queenBee model.QueenBee, workerBees map[string][]model.WorkerBee, droneBees map[string][]model.DroneBee) {
+func start(player model.Player, queenBee model.QueenBee, workerBees []model.WorkerBee, droneBees []model.DroneBee) {
 	fmt.Println("Actions: Health [h], View Beehive[b], Attack[a]")
 
 	for player.Health > 0 {
@@ -74,14 +77,10 @@ func start(player model.Player, queenBee model.QueenBee, workerBees map[string][
 		case "h":
 			fmt.Printf("%s's Health: %d\n", player.Name, player.Health)
 		case "b":
-			fmt.Println("Viewing the beehive...")
-			fmt.Printf("Queen Bee: %v\n", queenBee)
-			fmt.Printf("Worker Bees: %v\n", len(workerBees))
-			fmt.Printf("Drone Bees: %v\n", len(droneBees))
+			beehiveStatus(queenBee, workerBees, droneBees)
 		case "a":
 			fmt.Println("Attacking the beehive...")
-			// attack function. Hit or miss
-			// AttackHitOrMiss()
+			// AttackHitOrMiss(queenBee, workerBees, droneBees)
 		default:
 			fmt.Println("Invalid action. Try again.")
 		}
@@ -100,5 +99,6 @@ func start(player model.Player, queenBee model.QueenBee, workerBees map[string][
 
 	// if player dies
 	fmt.Println("Game Over! You have no health left.")
-
 }
+
+// attack function. Hit or miss
