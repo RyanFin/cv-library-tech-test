@@ -67,3 +67,8 @@ func (b *Bee) HitByPlayer() {
 	fmt.Printf("Direct Hit! You took %v hit points from a %s Bee\n", b.DamageByPlayer, b.BeeType)
 	b.Health -= b.DamageByPlayer
 }
+
+func (b *Bee) HitsPlayer(player *Player) {
+	fmt.Printf("%s Bee deals %v damage to the player.", b.BeeType, b.DamageToPlayer)
+	player.Health -= b.DamageToPlayer
+}
