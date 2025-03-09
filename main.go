@@ -36,13 +36,34 @@ func initBeeHive() (model.QueenBee, []model.WorkerBee, []model.DroneBee) {
 }
 
 func beehiveStatus(queenBee model.QueenBee, workerBees []model.WorkerBee, droneBees []model.DroneBee) {
-	fmt.Println("Viewing the beehive...")
-	fmt.Printf("Worker Bees: %v\n", len(workerBees))
-	fmt.Printf("Drone Bees: %v\n", len(droneBees))
+	fmt.Println("Viewing the beehive...\n")
 
-	fmt.Printf("Queen Bee: %v\n", queenBee)
-	fmt.Println("Worker Bees: ", workerBees)
-	fmt.Println("Drone Bees: ", droneBees)
+	// Print Queen Bee status
+	fmt.Println("=== Queen Bee ===")
+	fmt.Printf("Health: %-3d | Damage to Player: %-3d | Damage by Player: %-3d\n", queenBee.Health, queenBee.DamageToPlayer, queenBee.DamageByPlayer)
+	fmt.Println("---------------------")
+
+	// Print Worker Bees status
+	fmt.Println("=== Worker Bees ===")
+	if len(workerBees) > 0 {
+		for i, wb := range workerBees {
+			fmt.Printf("Worker Bee %d - Health: %-3d | Damage to Player: %-3d | Damage by Player: %-3d\n", i+1, wb.Health, wb.DamageToPlayer, wb.DamageByPlayer)
+		}
+	} else {
+		fmt.Println("No Worker Bees available.")
+	}
+	fmt.Println("---------------------")
+
+	// Print Drone Bees status
+	fmt.Println("=== Drone Bees ===")
+	if len(droneBees) > 0 {
+		for i, db := range droneBees {
+			fmt.Printf("Drone Bee %d - Health: %-3d | Damage to Player: %-3d | Damage by Player: %-3d\n", i+1, db.Health, db.DamageToPlayer, db.DamageByPlayer)
+		}
+	} else {
+		fmt.Println("No Drone Bees available.")
+	}
+	fmt.Println("---------------------")
 }
 
 func main() {
@@ -85,7 +106,7 @@ func start(player model.Player, queenBee model.QueenBee, workerBees []model.Work
 		case "v":
 			beehiveStatus(queenBee, workerBees, droneBees)
 		case "a":
-			fmt.Println("Attacking the beehive...")
+			fmt.Println("Attacking the beehive...\n")
 			AttackHitOrMiss(&player, &queenBee, &workerBees, &droneBees)
 		default:
 			fmt.Println("Invalid action. Try again.")
@@ -135,7 +156,7 @@ func AttackHitOrMiss(player *model.Player, queenBee *model.QueenBee, workerBees 
 	case 0:
 		// Player attacks
 		selectedBee.HitByPlayer()
-		fmt.Printf("Player attacked the %s Bee!\n", selectedBee.BeeType)
+		fmt.Printf("Player attacked the %s Bee!\n\n", selectedBee.BeeType)
 		if selectedBee.Health <= 0 {
 			// Remove the bee from its respective array
 			fmt.Printf("The %s Bee has been defeated!\n", selectedBee.BeeType)
@@ -152,17 +173,16 @@ func AttackHitOrMiss(player *model.Player, queenBee *model.QueenBee, workerBees 
 	case 1:
 		// Bee attacks player
 		selectedBee.HitsPlayer(player)
-		fmt.Printf("The %s Bee attacked the player!\n", selectedBee.BeeType)
+		fmt.Printf("\nThe %s Bee attacked the player!\n\n", selectedBee.BeeType)
 	case 2:
 		// Miss
-		fmt.Println("Player attack missed! No damage dealt.")
+		fmt.Printf("Player attack missed! No damage dealt.\n\n")
 	case 3:
-		fmt.Println("Bee attack missed the player! No damage received.")
+		fmt.Printf("Bee attack missed the player! No damage received.\n\n")
 	}
 
 	// Print the bee's health after the action
 	fmt.Printf("%s Bee's remaining health: %d\n", selectedBee.BeeType, selectedBee.Health)
-	fmt.Printf("Player's remaining health: %d\n", player.Health)
 }
 
 // Helper function to remove a worker bee from the slice by index
