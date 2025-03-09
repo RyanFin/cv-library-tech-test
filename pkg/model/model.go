@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type Bee struct {
 	Health, DamageToPlayer, DamageByPlayer int
 	BeeType                                string
@@ -28,7 +30,7 @@ func NewQueenBee() QueenBee {
 			Health:         100,
 			DamageToPlayer: 10,
 			DamageByPlayer: 10,
-			BeeType:        "QueenBee",
+			BeeType:        "Queen",
 		},
 	}
 }
@@ -39,7 +41,7 @@ func NewWorkerBee() WorkerBee {
 			Health:         75,
 			DamageToPlayer: 5,
 			DamageByPlayer: 25,
-			BeeType:        "WorkerBee",
+			BeeType:        "Worker",
 		},
 	}
 }
@@ -50,7 +52,7 @@ func NewDroneBee() DroneBee {
 			Health:         60,
 			DamageToPlayer: 1,
 			DamageByPlayer: 30,
-			BeeType:        "DroneBee",
+			BeeType:        "Drone",
 		},
 	}
 }
@@ -62,5 +64,6 @@ func NewPlayer() Player {
 }
 
 func (b *Bee) HitByPlayer() {
+	fmt.Printf("Direct Hit! You took %v hit points from a %s Bee\n", b.DamageByPlayer, b.BeeType)
 	b.Health -= b.DamageByPlayer
 }
